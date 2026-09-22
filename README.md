@@ -12,4 +12,4 @@ Two independent projects:
 
 The frontend works completely on its own today (mock API layer). Point it at
 the backend by setting `VITE_USE_MOCK_API=false` in `clinic-frontend/.env`
-once the backend is running against a real database.
+once the backend is running against a real databases.
