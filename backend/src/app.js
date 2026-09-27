@@ -25,6 +25,7 @@ export function createApp() {
         const isAllowed =
           env.clientUrls.some((u) => u.replace(/\/+$/, "") === cleanOrigin) ||
           cleanOrigin.endsWith(".onrender.com") ||
+          cleanOrigin.endsWith(".vercel.app") ||
           cleanOrigin.includes("localhost");
         if (isAllowed) return callback(null, true);
         return callback(null, true);

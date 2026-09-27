@@ -13,7 +13,7 @@ const io = new SocketIOServer(server, {
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       const clean = origin.replace(/\/+$/, "");
-      if (clean.endsWith(".onrender.com") || clean.includes("localhost") || env.clientUrls.includes(clean)) {
+      if (clean.endsWith(".onrender.com") || clean.endsWith(".vercel.app") || clean.includes("localhost") || env.clientUrls.includes(clean)) {
         return callback(null, true);
       }
       return callback(null, true);
