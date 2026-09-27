@@ -12,11 +12,22 @@ import { MESSAGES } from "./constans/messages.js";
 export function createApp() {
   const app = express();
 
+  // Render (and most PaaS hosts) terminate TLS at a proxy in front of the
+  // app, so without this Express would see every request as http:// and
+  // Secure cookies / req.secure / rate-limit IP detection would misbehave.
+  app.set("trust proxy", 1);
+
   app.use(helmet());
   app.use(
     cors({
-      origin: env.clientUrl,
+      origin(origin, callback) {
+        // No Origin header (curl, server-to-server, same-origin) — allow.
+        if (!origin || env.clientUrls.includes(origin)) return callback(null, true);
+        return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+      },
       credentials: true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
     })
   );
   app.use(express.json());

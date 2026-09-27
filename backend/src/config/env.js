@@ -18,7 +18,13 @@ validate();
 export const env = {
   port: Number(process.env.PORT) || 5000,
   nodeEnv: process.env.NODE_ENV || "development",
+  // Accepts one or more comma-separated origins, e.g.
+  // "https://pulseline-clinic.onrender.com,http://localhost:5173"
   clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+  clientUrls: (process.env.CLIENT_URL || "http://localhost:5173")
+    .split(",")
+    .map((url) => url.trim())
+    .filter(Boolean),
 
   databaseUrl: process.env.DATABASE_URL,
 
@@ -49,6 +55,12 @@ export const env = {
   khalti: {
     secretKey: process.env.KHALTI_SECRET_KEY,
     returnUrl: process.env.KHALTI_RETURN_URL,
+  },
+
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    apiSecret: process.env.CLOUDINARY_API_SECRET,
   },
 
   rateLimit: {

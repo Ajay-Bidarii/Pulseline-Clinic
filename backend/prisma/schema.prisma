@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -111,6 +111,7 @@ model User {
   fullName        String
   phone           String?   @unique
   avatar          String?
+  avatarPublicId  String?
   role            Role      @default(PATIENT)
   isActive        Boolean   @default(true)
   isEmailVerified Boolean   @default(false)
@@ -208,6 +209,8 @@ model AuditLog {
   id          String      @id @default(cuid())
   action      AuditAction
   description String?     @db.Text
+  resource    String?
+  details     Json?
   ipAddress   String?
   userAgent   String?
 
@@ -293,6 +296,7 @@ model Doctor {
   specialization    String?
   licenseNumber     String?
   qualifications    Json
+  certificates      Json?
   experience        Int?
   hospital          String?
   consultationFee   Float?
@@ -429,6 +433,7 @@ model Report {
   type      ReportType
   title     String
   fileUrl   String
+  filePublicId String?
   notes     String?
   reportDate DateTime @default(now())
 
