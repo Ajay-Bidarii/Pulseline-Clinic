@@ -67,7 +67,7 @@ export function GuestBookingForm({ doctors = [], onSubmit, submitting }) {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <Select label="Department" value={form.department} onChange={update("department")} options={DEPARTMENTS} />
-        <Select label="Doctor" value={form.doctorName} onChange={update("doctorName")} options={doctors.map((d) => d.name)} />
+        <Select label="Doctor" value={form.doctorName} onChange={update("doctorName")} options={doctors.map((d) => (typeof d === "string" ? d : d.name || "Doctor"))} />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <Input type="date" label="Preferred date" value={form.date} onChange={update("date")} error={errors.date} />

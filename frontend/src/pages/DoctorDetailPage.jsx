@@ -59,7 +59,9 @@ export default function DoctorDetailPage() {
             </div>
             <div>
               <h1 className="text-xl font-display font-semibold text-ink-900">{doctor.name}</h1>
-              <p className="text-sm text-ink-500">{doctor.department}</p>
+              <p className="text-sm text-ink-500">
+                {typeof doctor.department === "object" ? doctor.department?.name : doctor.department}
+              </p>
             </div>
           </div>
           <Badge tone={status.tone} dot>

@@ -21,7 +21,9 @@ export function DoctorCard({ doctor }) {
           </div>
           <div>
             <p className="font-display font-semibold text-ink-900">{doctor.name}</p>
-            <p className="text-xs text-ink-500">{doctor.department}</p>
+            <p className="text-xs text-ink-500">
+              {typeof doctor.department === "object" ? doctor.department?.name : doctor.department}
+            </p>
           </div>
         </div>
         <Badge tone={status.tone} dot>

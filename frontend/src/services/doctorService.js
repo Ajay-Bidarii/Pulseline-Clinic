@@ -4,17 +4,28 @@ import { mockDoctors } from "./mockData";
 let store = [...mockDoctors];
 
 function normalizeDoctor(d) {
+  const departmentName =
+    typeof d.department === "object" && d.department !== null
+      ? d.department.name || "General Medicine"
+      : typeof d.department === "string"
+      ? d.department
+      : "General Medicine";
+
+  const doctorName =
+    d.user?.fullName ||
+    (typeof d.name === "string" ? d.name : "Doctor");
+
   return {
-    id: d.id,
-    name: d.user?.fullName || d.name || "Doctor",
-    department: d.department?.name || d.department || "General Medicine",
-    email: d.user?.email || d.email || "",
-    phone: d.user?.phone || d.phone || "555-0100",
-    experience: d.experience ?? 5,
-    status: d.isAvailable ? "available" : (d.status || "available"),
-    rating: d.rating ?? 4.9,
-    patients: d.patients ?? 100,
     ...d,
+    id: d.id,
+    name: doctorName,
+    department: departmentName,
+    email: d.user?.email || (typeof d.email === "string" ? d.email : ""),
+    phone: d.user?.phone || (typeof d.phone === "string" ? d.phone : "555-0100"),
+    experience: d.experience ?? 5,
+    status: d.isAvailable ? "available" : (typeof d.status === "string" ? d.status : "available"),
+    rating: typeof d.rating === "number" ? d.rating : 4.9,
+    patients: typeof d.patients === "number" ? d.patients : 100,
   };
 }
 
