@@ -9,7 +9,7 @@ services:
   - type: web
     name: pulseline-clinic-backend
     runtime: node
-    rootDir: clinic-backend
+    rootDir: backend
     plan: free
     buildCommand: npm install && npm run build
     startCommand: npm start
@@ -45,7 +45,7 @@ services:
   - type: web
     name: pulseline-clinic-frontend
     runtime: static
-    rootDir: clinic-frontend
+    rootDir: frontend
     plan: free
     buildCommand: npm install && npm run build
     staticPublishPath: dist
