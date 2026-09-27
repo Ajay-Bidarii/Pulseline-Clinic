@@ -8,7 +8,15 @@ async function getAll() {
     await api.delay(400);
     return [...store];
   }
-  return api.request("/patients");
+  try {
+    const res = await api.request("/patients");
+    const list = res?.data?.patients || res?.patients || (Array.isArray(res) ? res : []);
+    if (!Array.isArray(list) || list.length === 0) return [...store];
+    return list;
+  } catch (err) {
+    console.warn("Failed to fetch patients:", err.message);
+    return [...store];
+  }
 }
 
 async function create(payload) {

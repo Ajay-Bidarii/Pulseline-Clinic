@@ -16,7 +16,15 @@ async function getQueue() {
     await api.delay(200);
     return [...queue];
   }
-  return api.request("/queue");
+  try {
+    const res = await api.request("/queue");
+    const list = res?.data?.queue || res?.queue || (Array.isArray(res) ? res : []);
+    if (!Array.isArray(list) || list.length === 0) return [...queue];
+    return list;
+  } catch (err) {
+    console.warn("Failed to fetch queue:", err.message);
+    return [...queue];
+  }
 }
 
 async function checkIn({ patientName, doctorName, department }) {

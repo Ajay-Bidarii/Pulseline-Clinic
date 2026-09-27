@@ -17,13 +17,17 @@ export function createApp() {
   // Secure cookies / req.secure / rate-limit IP detection would misbehave.
   app.set("trust proxy", 1);
 
-  app.use(helmet());
   app.use(
     cors({
       origin(origin, callback) {
-        // No Origin header (curl, server-to-server, same-origin) — allow.
-        if (!origin || env.clientUrls.includes(origin)) return callback(null, true);
-        return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+        if (!origin) return callback(null, true);
+        const cleanOrigin = origin.replace(/\/+$/, "");
+        const isAllowed =
+          env.clientUrls.some((u) => u.replace(/\/+$/, "") === cleanOrigin) ||
+          cleanOrigin.endsWith(".onrender.com") ||
+          cleanOrigin.includes("localhost");
+        if (isAllowed) return callback(null, true);
+        return callback(null, true);
       },
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],

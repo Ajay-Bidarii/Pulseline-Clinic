@@ -17,10 +17,25 @@ export default function VisitorPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    doctorService.getAll().then((data) => {
-      setDoctors(data);
-      setLoading(false);
-    });
+    let active = true;
+    doctorService
+      .getAll()
+      .then((data) => {
+        if (active) {
+          setDoctors(Array.isArray(data) ? data : []);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching doctors:", err);
+      })
+      .finally(() => {
+        if (active) {
+          setLoading(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const handleGuestBooking = async (payload) => {

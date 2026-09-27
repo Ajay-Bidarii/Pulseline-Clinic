@@ -8,7 +8,15 @@ async function getAll() {
     await api.delay(400);
     return [...store].sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
   }
-  return api.request("/appointments");
+  try {
+    const res = await api.request("/appointments");
+    const list = res?.data?.appointments || res?.appointments || (Array.isArray(res) ? res : []);
+    if (!Array.isArray(list) || list.length === 0) return [...store];
+    return list;
+  } catch (err) {
+    console.warn("Failed to fetch appointments:", err.message);
+    return [...store];
+  }
 }
 
 async function create(payload) {

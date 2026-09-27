@@ -19,9 +19,15 @@ export default function DoctorsPage() {
   const [submitting, setSubmitting] = useState(false);
 
   const loadData = async () => {
-    const data = await doctorService.getAll();
-    setDoctors(data);
-    setLoading(false);
+    try {
+      const data = await doctorService.getAll();
+      setDoctors(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Error loading doctors:", err);
+      setDoctors([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

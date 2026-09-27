@@ -1,5 +1,18 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api";
-const USE_MOCK = (import.meta.env.VITE_USE_MOCK_API ?? "true") === "true";
+function getBaseUrl() {
+  let url = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
+  url = url.trim().replace(/\/+$/, "");
+  if (!url.endsWith("/api/v1")) {
+    if (url.endsWith("/api")) {
+      url += "/v1";
+    } else {
+      url += "/api/v1";
+    }
+  }
+  return url;
+}
+
+const BASE_URL = getBaseUrl();
+const USE_MOCK = import.meta.env.VITE_USE_MOCK_API === "true";
 
 function delay(ms = 450) {
   return new Promise((resolve) => setTimeout(resolve, ms));
